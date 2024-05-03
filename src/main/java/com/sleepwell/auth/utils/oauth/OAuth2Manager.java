@@ -1,4 +1,4 @@
-package com.sleepwell.auth.utils;
+package com.sleepwell.auth.utils.oauth;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,7 @@ public class OAuth2Manager {
 
 	private static final String ERROR_MESSAGE_ALREADY_EXIST_SOCIAL_TYPE = "이미 존재하는 SocialType 입니다.";
 	private static final String ERROR_MESSAGE_NOT_EXIST_SOCIAL_TYPE = "존재하지 않은 OAuth2 요청입니다.";
-	
+
 	private final Map<SocialType, OAuth2Client> oAuth2ClientMap = new HashMap<>();
 
 	public OAuth2Manager(List<OAuth2Client> oAuth2Clients) {

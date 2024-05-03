@@ -1,4 +1,4 @@
-package com.sleepwell.auth.utils;
+package com.sleepwell.auth.utils.oauth;
 
 import java.util.Optional;
 
