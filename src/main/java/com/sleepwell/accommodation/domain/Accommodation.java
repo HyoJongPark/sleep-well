@@ -57,4 +57,20 @@ public class Accommodation extends BaseEntity {
 
 	@OneToMany(mappedBy = "accommodation")
 	private List<Reservation> reservations = new ArrayList<>();
+
+	public Accommodation(String accommodationName, int price, String accommodationType, Address address,
+		LocalTime checkInTime, LocalTime checkOutTime, int maximumNumberOfGuest, String description) {
+		this.accommodationName = accommodationName;
+		this.price = price;
+		this.accommodationType = accommodationType;
+		this.address = address;
+		this.checkInTime = checkInTime;
+		this.checkOutTime = checkOutTime;
+		this.maximumNumberOfGuest = maximumNumberOfGuest;
+		this.description = description;
+	}
+
+	public void setHost(User host) {
+		this.host = host;
+	}
 }
