@@ -21,6 +21,7 @@ public class User extends BaseEntity {
 	private static final String DEFAULT_IMAGE_URL = "";
 
 	@Id
+	@Column(name = "USER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
