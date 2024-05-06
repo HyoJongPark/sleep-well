@@ -3,8 +3,8 @@ package com.sleepwell.auth.service;
 import org.springframework.stereotype.Service;
 
 import com.sleepwell.auth.dto.UserInfo;
-import com.sleepwell.auth.utils.OAuth2Client;
-import com.sleepwell.auth.utils.OAuth2Manager;
+import com.sleepwell.auth.utils.oauth.OAuth2Client;
+import com.sleepwell.auth.utils.oauth.OAuth2Manager;
 import com.sleepwell.user.domain.SocialType;
 import com.sleepwell.user.domain.User;
 import com.sleepwell.user.repository.UserRepository;
