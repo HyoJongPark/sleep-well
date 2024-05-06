@@ -3,6 +3,8 @@ package com.sleepwell.accommodation.presentation;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.dto.AccommodationCreateDto;
+import com.sleepwell.accommodation.dto.GetAccommodationResponseDto;
 import com.sleepwell.accommodation.service.AccommodationService;
 import com.sleepwell.auth.utils.AuthUser;
 
@@ -29,5 +32,13 @@ public class AccommodationController {
 		Accommodation accommodation = accommodationService.createAccommodation(hostId, dto.toEntity());
 
 		return ResponseEntity.created(URI.create("/rooms/" + accommodation.getId())).build();
+	}
+
+	@GetMapping("/{accommodationId}")
+	public ResponseEntity<GetAccommodationResponseDto> getAccommodation(@PathVariable Long accommodationId) {
+		Accommodation accommodation = accommodationService.getAccommodation(accommodationId);
+
+		return ResponseEntity.ok()
+			.body(GetAccommodationResponseDto.fromEntity(accommodation));
 	}
 }
