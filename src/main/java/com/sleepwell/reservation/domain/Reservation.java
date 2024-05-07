@@ -33,8 +33,6 @@ public class Reservation {
 
 	private LocalDate checkOutDate;
 
-	private LocalDate reservedDate;
-
 	@Enumerated(EnumType.STRING)
 	private ReservationStatus reservationStatus;
 
@@ -50,11 +48,10 @@ public class Reservation {
 	@JoinColumn(name = "ACCOMMODATION_ID")
 	private Accommodation accommodation;
 
-	public Reservation(LocalDate checkInDate, LocalDate checkOutDate, LocalDate reservedDate,
-		ReservationStatus reservationStatus, int numberOfGuest, int amount) {
+	public Reservation(LocalDate checkInDate, LocalDate checkOutDate, ReservationStatus reservationStatus,
+		int numberOfGuest, int amount) {
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
-		this.reservedDate = reservedDate;
 		this.reservationStatus = reservationStatus;
 		this.numberOfGuest = numberOfGuest;
 		this.amount = amount;

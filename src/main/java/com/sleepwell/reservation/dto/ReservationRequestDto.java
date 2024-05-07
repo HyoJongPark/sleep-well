@@ -41,7 +41,6 @@ public record ReservationRequestDto(
 	int numberOfGuest
 ) {
 	public Reservation toEntity() {
-		return new Reservation(checkInDate, checkOutDate, LocalDate.now(), ReservationStatus.BEFORE_PAYED,
-			numberOfGuest, amount);
+		return new Reservation(checkInDate, checkOutDate, ReservationStatus.BEFORE_PAYED, numberOfGuest, amount);
 	}
 }
