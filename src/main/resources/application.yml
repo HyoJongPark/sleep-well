@@ -10,6 +10,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
 
 server:
   port: 8081

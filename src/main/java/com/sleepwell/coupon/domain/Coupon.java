@@ -32,6 +32,6 @@ public class Coupon {
 	@Column
 	int issuedAmount;
 
-	@OneToMany(mappedBy = "issued_coupon")
+	@OneToMany
 	List<IssuedCoupon> issuedCoupons = new ArrayList<>();
 }
