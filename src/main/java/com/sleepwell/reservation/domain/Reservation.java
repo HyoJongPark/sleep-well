@@ -46,4 +46,14 @@ public class Reservation {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ACCOMMODATION_ID")
 	private Accommodation accommodation;
+
+	public Reservation(LocalDate checkInDate, LocalDate checkOutDate, LocalDate reservedDate,
+		ReservationStatus reservationStatus, int numberOfGuest, int amount) {
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.reservedDate = reservedDate;
+		this.reservationStatus = reservationStatus;
+		this.numberOfGuest = numberOfGuest;
+		this.amount = amount;
+	}
 }
