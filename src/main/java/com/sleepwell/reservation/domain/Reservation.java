@@ -15,10 +15,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
 
 	@Id
@@ -55,5 +58,12 @@ public class Reservation {
 		this.reservationStatus = reservationStatus;
 		this.numberOfGuest = numberOfGuest;
 		this.amount = amount;
+	}
+
+	public void updateGuestAndAccommodation(User guest, Accommodation accommodation) {
+		this.guest = guest;
+
+		this.accommodation = accommodation;
+		accommodation.getReservations().add(this);
 	}
 }
