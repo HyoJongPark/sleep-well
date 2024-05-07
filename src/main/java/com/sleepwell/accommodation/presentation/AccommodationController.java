@@ -36,7 +36,7 @@ public class AccommodationController {
 
 	@GetMapping("/{accommodationId}")
 	public ResponseEntity<GetAccommodationResponseDto> getAccommodation(@PathVariable Long accommodationId) {
-		Accommodation accommodation = accommodationService.getAccommodation(accommodationId);
+		Accommodation accommodation = accommodationService.findById(accommodationId);
 
 		return ResponseEntity.ok()
 			.body(GetAccommodationResponseDto.fromEntity(accommodation));
