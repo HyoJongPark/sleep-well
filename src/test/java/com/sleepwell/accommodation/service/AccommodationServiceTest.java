@@ -16,14 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.repository.AccommodationRepository;
 import com.sleepwell.user.domain.User;
-import com.sleepwell.user.repository.UserRepository;
 import com.sleepwell.user.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 class AccommodationServiceTest {
-
-	@Mock
-	UserRepository userRepository;
 
 	@Mock
 	AccommodationRepository accommodationRepository;
