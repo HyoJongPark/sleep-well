@@ -11,6 +11,7 @@ import com.sleepwell.coupon.repository.IssuedCouponRepository;
 import com.sleepwell.user.domain.User;
 import com.sleepwell.user.service.UserService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,6 +25,7 @@ public class IssuedCouponService {
 	private final CouponService couponService;
 	private final IssuedCouponRepository issuedCouponRepository;
 
+	@Transactional
 	synchronized public IssuedCoupon issueCoupon(Long userId, String couponCode) {
 		Coupon coupon = couponService.findByCouponCode(couponCode);
 		User user = userService.findById(userId);
