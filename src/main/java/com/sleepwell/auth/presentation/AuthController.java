@@ -30,7 +30,7 @@ public class AuthController {
 	public ResponseEntity<Void> googleAuthLogin(@RequestBody @Valid LoginRequest loginRequest,
 		HttpServletResponse response) {
 		User user = authService.login(loginRequest.socialType(), loginRequest.accessToken());
-		String token = jwtProvider.createToken(user.getId());
+		String token = jwtProvider.createToken(user.getId(), user.getRole());
 
 		Cookie cookie = new Cookie(ACCESS_TOKEN_NAME, token);
 		cookie.setHttpOnly(true);
