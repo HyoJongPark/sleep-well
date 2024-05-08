@@ -14,8 +14,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon extends BaseEntity {
 
 	@Id
@@ -45,7 +50,7 @@ public class Coupon extends BaseEntity {
 	Integer totalAmount;
 
 	@Column
-	Integer issuedAmount;
+	Integer issuedAmount = 0;
 
 	@Column
 	LocalDateTime startDateTime;
@@ -55,4 +60,18 @@ public class Coupon extends BaseEntity {
 
 	@OneToMany
 	List<IssuedCoupon> issuedCoupons = new ArrayList<>();
+
+	public Coupon(String title, String description, DiscountType discountType, Integer discountAmount,
+		ExpiryType expiryType, LocalDateTime expiryDateTime, Integer totalAmount, LocalDateTime startDateTime,
+		LocalDateTime endDateTime) {
+		this.title = title;
+		this.description = description;
+		this.discountType = discountType;
+		this.discountAmount = discountAmount;
+		this.expiryType = expiryType;
+		this.expiryDateTime = expiryDateTime;
+		this.totalAmount = totalAmount;
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
+	}
 }
