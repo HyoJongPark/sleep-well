@@ -1,5 +1,8 @@
 package com.sleepwell.coupon.domain;
 
+import java.time.LocalDateTime;
+
+import com.sleepwell.common.domain.BaseEntity;
 import com.sleepwell.user.domain.User;
 
 import jakarta.persistence.Column;
@@ -12,7 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class IssuedCoupon {
+public class IssuedCoupon extends BaseEntity {
 
 	@Id
 	@Column(name = "ISSUED_COUPON_ID")
@@ -21,6 +24,9 @@ public class IssuedCoupon {
 
 	@Enumerated(EnumType.STRING)
 	CouponStatus couponStatus;
+
+	@Column
+	LocalDateTime expiredDate;
 
 	@OneToOne
 	User issuer;
