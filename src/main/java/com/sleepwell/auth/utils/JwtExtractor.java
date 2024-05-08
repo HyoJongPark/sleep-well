@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.sleepwell.auth.dto.Principle;
+import com.sleepwell.user.domain.Role;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -45,7 +46,8 @@ public class JwtExtractor {
 		Claims claims = parseClaims(token.getValue());
 
 		Long id = claims.get(USER_ID_CLAIM, Long.class);
-		return new Principle(id);
+		Role role = claims.get(ROLE_CLAIM, Role.class);
+		return new Principle(id, role);
 	}
 
 	private Optional<Cookie> parseCookie(Cookie[] cookies) {

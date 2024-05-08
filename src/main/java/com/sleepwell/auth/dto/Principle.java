@@ -1,4 +1,9 @@
 package com.sleepwell.auth.dto;
 
-public record Principle(Long id) {
+import com.sleepwell.user.domain.Role;
+
+public record Principle(
+	Long id,
+	Role role
+) {
 }
