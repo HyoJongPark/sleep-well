@@ -19,6 +19,9 @@ public record CreateCouponRequestDto(
 	@NotBlank
 	String description,
 
+	@NotBlank
+	String couponCode,
+
 	@NotNull
 	DiscountType discountType,
 
@@ -44,7 +47,8 @@ public record CreateCouponRequestDto(
 	LocalDateTime endDateTime
 ) {
 	public Coupon toEntity() {
-		return new Coupon(this.title, this.description, this.discountType, this.discountAmount, this.expiryType,
+		return new Coupon(this.title, this.description, this.couponCode, this.discountType, this.discountAmount,
+			this.expiryType,
 			this.expiryDateTime, this.totalAmount, this.startDateTime, this.endDateTime);
 	}
 }

@@ -3,6 +3,7 @@ package com.sleepwell.coupon.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.sleepwell.common.domain.BaseEntity;
 
@@ -34,6 +35,9 @@ public class Coupon extends BaseEntity {
 	@Column
 	String description;
 
+	@Column
+	String couponCode;
+
 	@Enumerated(EnumType.STRING)
 	DiscountType discountType;
 
@@ -61,11 +65,12 @@ public class Coupon extends BaseEntity {
 	@OneToMany
 	List<IssuedCoupon> issuedCoupons = new ArrayList<>();
 
-	public Coupon(String title, String description, DiscountType discountType, Integer discountAmount,
-		ExpiryType expiryType, LocalDateTime expiryDateTime, Integer totalAmount, LocalDateTime startDateTime,
-		LocalDateTime endDateTime) {
+	public Coupon(String title, String description, String couponCode, DiscountType discountType,
+		Integer discountAmount, ExpiryType expiryType, LocalDateTime expiryDateTime, Integer totalAmount,
+		LocalDateTime startDateTime, LocalDateTime endDateTime) {
 		this.title = title;
 		this.description = description;
+		this.couponCode = couponCode;
 		this.discountType = discountType;
 		this.discountAmount = discountAmount;
 		this.expiryType = expiryType;
@@ -73,5 +78,16 @@ public class Coupon extends BaseEntity {
 		this.totalAmount = totalAmount;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
+	}
+
+	public void updateCouponAmount(IssuedCoupon issuedCoupon) {
+		this.issuedAmount++;
+
+		issuedCoupon.setCoupon(this);
+		this.issuedCoupons.add(issuedCoupon);
+	}
+
+	public boolean outOfStock() {
+		return Objects.equals(this.totalAmount, this.issuedAmount);
 	}
 }
