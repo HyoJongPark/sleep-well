@@ -38,6 +38,9 @@ public class User extends BaseEntity {
 	@Column
 	private String profileImage = DEFAULT_IMAGE_URL;
 
+	@Enumerated(EnumType.STRING)
+	private Role role = Role.NORMAL;
+
 	public User(String socialId, SocialType socialType, String nickname, String profileImage) {
 		this.socialId = socialId;
 		this.socialType = socialType;
