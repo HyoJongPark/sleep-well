@@ -28,6 +28,11 @@ public class JwtInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		Principle principle = jwtExtractor.extract(request.getCookies());
+
+		if (principle.role() != this.role) {
+			throw new RuntimeException("접근 권한이 올바르지 않습니다.");
+		}
+
 		authenticationStorage.set(principle);
 		return true;
 	}
