@@ -35,7 +35,7 @@ public class Coupon extends BaseEntity {
 	@Column
 	String description;
 
-	@Column
+	@Column(unique = true)
 	String couponCode;
 
 	@Enumerated(EnumType.STRING)
