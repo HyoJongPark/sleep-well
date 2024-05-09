@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.sleepwell.coupon.domain.Coupon;
 import com.sleepwell.coupon.domain.DiscountType;
@@ -24,6 +25,7 @@ import com.sleepwell.user.domain.User;
 import com.sleepwell.user.repository.UserRepository;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class IssuedCouponRepositoryTest {
 
 	@Autowired

@@ -1,19 +1,16 @@
 spring:
   config:
     activate:
-      on-profile: default
+      on-profile: test
   application:
     name: sleep-well
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: ${TEST_DB_URL}
+    username: ${TEST_DB_USER}
+    password: ${TEST_DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
-
-server:
-  port: 8081
