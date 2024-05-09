@@ -26,7 +26,7 @@ public class IssuedCouponService {
 	private final IssuedCouponRepository issuedCouponRepository;
 
 	@Transactional
-	synchronized public IssuedCoupon issueCoupon(Long userId, String couponCode) {
+	public IssuedCoupon issueCoupon(Long userId, String couponCode) {
 		Coupon coupon = couponService.findByCouponCode(couponCode);
 		User user = userService.findById(userId);
 
@@ -37,7 +37,8 @@ public class IssuedCouponService {
 
 		IssuedCoupon issuedCoupon = new IssuedCoupon(expiredTime, user);
 		coupon.updateCouponAmount(issuedCoupon);
-		return issuedCouponRepository.save(issuedCoupon);
+		issuedCouponRepository.save(issuedCoupon);
+		return issuedCoupon;
 	}
 
 	private LocalDateTime calculateExpiredTime(ExpiryType expiryType, LocalDateTime expiryDateTime) {

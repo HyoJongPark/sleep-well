@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.sleepwell.coupon.domain.Coupon;
 import com.sleepwell.coupon.domain.DiscountType;
 import com.sleepwell.coupon.domain.ExpiryType;
+import com.sleepwell.coupon.service.IssuedCouponFacade;
 import com.sleepwell.coupon.service.IssuedCouponService;
 import com.sleepwell.user.domain.SocialType;
 import com.sleepwell.user.domain.User;
@@ -24,6 +25,9 @@ import com.sleepwell.user.repository.UserRepository;
 
 @SpringBootTest
 class IssuedCouponRepositoryTest {
+
+	@Autowired
+	IssuedCouponFacade issuedCouponFacade;
 
 	@Autowired
 	IssuedCouponService issuedCouponService;
@@ -39,10 +43,11 @@ class IssuedCouponRepositoryTest {
 
 	@Nested
 	@DisplayName("쿠폰 정합성 테스트")
-	class CouponValidTest {
+	class CouponConsistencyTest {
 
 		@Test
-		void coupon() throws InterruptedException {
+		@DisplayName("동시에 쿠폰을 발급 시, 재고 만큼의 수량만 발급한다.")
+		void couponIssueInSynchronousEnvironment() throws InterruptedException {
 			// given
 			int memberCount = 30;
 			int couponAmount = 10;
@@ -70,7 +75,7 @@ class IssuedCouponRepositoryTest {
 
 				executorService.submit(() -> {
 					try {
-						issuedCouponService.issueCoupon(currentUser.getId(), couponCode);
+						issuedCouponFacade.issueCoupon(currentUser.getId(), couponCode);
 						successCount.incrementAndGet();
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
@@ -82,13 +87,10 @@ class IssuedCouponRepositoryTest {
 			}
 
 			latch.await();
-
-			System.out.println("successCount = " + successCount);
-			System.out.println("failCount = " + failCount);
+			long reservationCount = issuedCouponRepository.count();
 
 			// then
-			long reservationCount = issuedCouponRepository.count();
-			assertEquals(Math.min(memberCount, couponAmount), reservationCount);
+			assertEquals(successCount.get(), reservationCount);
 		}
 	}
 
