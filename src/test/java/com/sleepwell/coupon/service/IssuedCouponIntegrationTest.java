@@ -1,4 +1,4 @@
-package com.sleepwell.coupon.repository;
+package com.sleepwell.coupon.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,15 +18,15 @@ import org.springframework.test.context.ActiveProfiles;
 import com.sleepwell.coupon.domain.Coupon;
 import com.sleepwell.coupon.domain.DiscountType;
 import com.sleepwell.coupon.domain.ExpiryType;
-import com.sleepwell.coupon.service.IssuedCouponFacade;
-import com.sleepwell.coupon.service.IssuedCouponService;
+import com.sleepwell.coupon.repository.CouponRepository;
+import com.sleepwell.coupon.repository.IssuedCouponRepository;
 import com.sleepwell.user.domain.SocialType;
 import com.sleepwell.user.domain.User;
 import com.sleepwell.user.repository.UserRepository;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class IssuedCouponRepositoryTest {
+class IssuedCouponIntegrationTest {
 
 	@Autowired
 	IssuedCouponFacade issuedCouponFacade;
@@ -65,11 +65,10 @@ class IssuedCouponRepositoryTest {
 				users[i] = user;
 			}
 
-			ExecutorService executorService = Executors.newFixedThreadPool(30);
+			ExecutorService executorService = Executors.newFixedThreadPool(memberCount);
 			CountDownLatch latch = new CountDownLatch(memberCount);
 
 			AtomicInteger successCount = new AtomicInteger();
-			AtomicInteger failCount = new AtomicInteger();
 
 			// when
 			for (int i = 0; i < memberCount; i++) {
@@ -81,7 +80,6 @@ class IssuedCouponRepositoryTest {
 						successCount.incrementAndGet();
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
-						failCount.incrementAndGet();
 					} finally {
 						latch.countDown();
 					}
@@ -92,7 +90,8 @@ class IssuedCouponRepositoryTest {
 			long reservationCount = issuedCouponRepository.count();
 
 			// then
-			assertEquals(successCount.get(), reservationCount);
+			assertEquals(couponAmount, successCount.get());
+			assertEquals(couponAmount, reservationCount);
 		}
 	}
 
