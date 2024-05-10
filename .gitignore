@@ -10,3 +10,7 @@
 
 .gradle
 **/build
+
+### Query Dsl ###
+
+/src/main/generated/**
