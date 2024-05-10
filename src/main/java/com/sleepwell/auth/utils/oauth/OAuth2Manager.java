@@ -7,13 +7,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.sleepwell.common.error.exception.ErrorCode;
+import com.sleepwell.common.error.exception.InternalServerException;
 import com.sleepwell.user.domain.SocialType;
 
 @Component
 public class OAuth2Manager {
-
-	private static final String ERROR_MESSAGE_ALREADY_EXIST_SOCIAL_TYPE = "이미 존재하는 SocialType 입니다.";
-	private static final String ERROR_MESSAGE_NOT_EXIST_SOCIAL_TYPE = "존재하지 않은 OAuth2 요청입니다.";
 
 	private final Map<SocialType, OAuth2Client> oAuth2ClientMap = new HashMap<>();
 
@@ -24,7 +23,7 @@ public class OAuth2Manager {
 	private void addClient(OAuth2Client oAuth2Client) {
 		SocialType socialType = oAuth2Client.getSocialType();
 		if (oAuth2ClientMap.containsKey(socialType)) {
-			throw new RuntimeException(ERROR_MESSAGE_ALREADY_EXIST_SOCIAL_TYPE);
+			throw new InternalServerException(ErrorCode.ALREADY_EXIST_SOCIAL_TYPE);
 		}
 
 		oAuth2ClientMap.put(socialType, oAuth2Client);
@@ -32,6 +31,6 @@ public class OAuth2Manager {
 
 	public OAuth2Client getOAuth2Client(SocialType socialType) {
 		return Optional.ofNullable(oAuth2ClientMap.get(socialType))
-			.orElseThrow(() -> new RuntimeException(ERROR_MESSAGE_NOT_EXIST_SOCIAL_TYPE));
+			.orElseThrow(() -> new InternalServerException(ErrorCode.NOT_EXIST_SOCIAL_TYPE));
 	}
 }

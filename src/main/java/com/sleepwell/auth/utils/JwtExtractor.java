@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.sleepwell.auth.dto.Principle;
+import com.sleepwell.common.error.exception.ErrorCode;
+import com.sleepwell.common.error.exception.UnAuthorizedException;
 import com.sleepwell.user.domain.Role;
 
 import io.jsonwebtoken.Claims;
@@ -25,11 +27,6 @@ import jakarta.servlet.http.Cookie;
 public class JwtExtractor {
 
 	private static final String JWT_TOKEN_NAME = "utk";
-	private static final String ERROR_MESSAGE_TOKEN_NOT_EXIST = "인증 토큰이 존재하지 않습니다.";
-	private static final String ERROR_MESSAGE_INVALID_JWT_SIGNATURE = "잘못된 JWT 서명입니다.";
-	private static final String ERROR_MESSAGE_EXPIRED_JWT = "만료된 JWT 토큰입니다.";
-	private static final String ERROR_MESSAGE_NOT_SUPPORT_JWT = "지원되지 않는 JWT 토큰입니다.";
-	private static final String ERROR_MESSAGE_INVALID_JWT_FORMAT = "잘못된 JWT 토큰 형식입니다.";
 
 	private final JwtParser jwtParser;
 
@@ -42,7 +39,7 @@ public class JwtExtractor {
 
 	public Principle extract(Cookie[] cookies) {
 		Cookie token = parseCookie(cookies)
-			.orElseThrow(() -> new RuntimeException(ERROR_MESSAGE_TOKEN_NOT_EXIST));
+			.orElseThrow(() -> new UnAuthorizedException(ErrorCode.TOKEN_NOT_EXIST));
 		Claims claims = parseClaims(token.getValue());
 
 		Long id = claims.get(USER_ID_CLAIM, Long.class);
@@ -65,13 +62,13 @@ public class JwtExtractor {
 			return jwtParser.parseClaimsJws(token)
 				.getBody();
 		} catch (SecurityException | MalformedJwtException exception) {
-			throw new RuntimeException(ERROR_MESSAGE_INVALID_JWT_SIGNATURE);
+			throw new UnAuthorizedException(ErrorCode.INVALID_JWT_SIGNATURE);
 		} catch (ExpiredJwtException e) {
-			throw new RuntimeException(ERROR_MESSAGE_EXPIRED_JWT);
+			throw new UnAuthorizedException(ErrorCode.EXPIRED_JWT);
 		} catch (UnsupportedJwtException e) {
-			throw new RuntimeException(ERROR_MESSAGE_NOT_SUPPORT_JWT);
+			throw new UnAuthorizedException(ErrorCode.NOT_SUPPORT_JWT);
 		} catch (IllegalArgumentException e) {
-			throw new RuntimeException(ERROR_MESSAGE_INVALID_JWT_FORMAT);
+			throw new UnAuthorizedException(ErrorCode.INVALID_JWT_FORMAT);
 		}
 	}
 }

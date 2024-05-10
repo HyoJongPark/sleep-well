@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.sleepwell.auth.dto.Principle;
+import com.sleepwell.common.error.exception.ErrorCode;
+import com.sleepwell.common.error.exception.ForbiddenException;
 import com.sleepwell.user.domain.Role;
 
 import jakarta.annotation.Nullable;
@@ -30,7 +32,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 		Principle principle = jwtExtractor.extract(request.getCookies());
 
 		if (principle.role() != this.role) {
-			throw new RuntimeException("접근 권한이 올바르지 않습니다.");
+			throw new ForbiddenException(ErrorCode.FORBIDDEN);
 		}
 
 		authenticationStorage.set(principle);

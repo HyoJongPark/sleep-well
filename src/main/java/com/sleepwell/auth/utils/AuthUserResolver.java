@@ -8,14 +8,14 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.sleepwell.auth.dto.Principle;
+import com.sleepwell.common.error.exception.ErrorCode;
+import com.sleepwell.common.error.exception.UnAuthorizedException;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class AuthUserResolver implements HandlerMethodArgumentResolver {
-
-	private static final String ERROR_MESSAGE_NOT_LOGIN = "로그인 정보가 존재하지 않습니다.";
 
 	private final AuthenticationStorage authenticationStorage;
 
@@ -29,6 +29,6 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		return authenticationStorage.get()
-			.orElseThrow(() -> new RuntimeException(ERROR_MESSAGE_NOT_LOGIN));
+			.orElseThrow(() -> new UnAuthorizedException(ErrorCode.NOT_LOGIN_REQUEST));
 	}
 }

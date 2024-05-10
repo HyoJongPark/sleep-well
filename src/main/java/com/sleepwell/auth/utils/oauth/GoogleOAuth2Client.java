@@ -11,12 +11,13 @@ import org.springframework.web.client.RestTemplate;
 
 import com.sleepwell.auth.dto.GoogleUserInfo;
 import com.sleepwell.auth.dto.UserInfo;
+import com.sleepwell.common.error.exception.BadRequestException;
+import com.sleepwell.common.error.exception.ErrorCode;
 import com.sleepwell.user.domain.SocialType;
 
 @Component
 public class GoogleOAuth2Client implements OAuth2Client {
 
-	private static final String ERROR_MESSAGE_INVALID_LOGIN_REQUEST = "유효하지 않은 로그인 요청입니다.";
 	private static final String GOOGLE_USER_INFO_API_URL = "https://www.googleapis.com/userinfo/v2/me";
 
 	private final RestTemplate restTemplate;
@@ -39,7 +40,7 @@ public class GoogleOAuth2Client implements OAuth2Client {
 				new HttpEntity<>(headers), GoogleUserInfo.class)
 			.getBody();
 		return Optional.ofNullable(googleUserInfo)
-			.orElseThrow(() -> new RuntimeException(ERROR_MESSAGE_INVALID_LOGIN_REQUEST))
+			.orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_GOGGLE_OAUTH2_REQUEST))
 			.toUserInfo();
 	}
 }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.sleepwell.common.error.exception.BadRequestException;
+import com.sleepwell.common.error.exception.ErrorCode;
 import com.sleepwell.coupon.domain.Coupon;
 import com.sleepwell.coupon.domain.ExpiryType;
 import com.sleepwell.coupon.domain.IssuedCoupon;
@@ -17,9 +19,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class IssuedCouponService {
-
-	private static final String ERROR_MESSAGE_COUPON_OUT_OF_STOCK = "재고가 소진된 쿠폰입니다.";
-	private static final String ERROR_MESSAGE_ALREADY_ISSUED_COUPON = "이미 발급된 쿠폰입니다.";
 
 	private final UserService userService;
 	private final CouponService couponService;
@@ -47,13 +46,13 @@ public class IssuedCouponService {
 
 	private static void validateCouponStock(Coupon coupon) {
 		if (coupon.outOfStock()) {
-			throw new RuntimeException(ERROR_MESSAGE_COUPON_OUT_OF_STOCK);
+			throw new BadRequestException(ErrorCode.COUPON_OUT_OF_STOCK);
 		}
 	}
 
 	private void validateCouponAlreadyIssued(Coupon coupon, User user) {
 		if (issuedCouponRepository.existsByCouponAndIssuer(coupon, user)) {
-			throw new RuntimeException(ERROR_MESSAGE_ALREADY_ISSUED_COUPON);
+			throw new BadRequestException(ErrorCode.ALREADY_ISSUED_COUPON);
 		}
 	}
 }
