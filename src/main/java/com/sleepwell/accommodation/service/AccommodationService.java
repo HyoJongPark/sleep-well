@@ -2,6 +2,7 @@ package com.sleepwell.accommodation.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sleepwell.accommodation.domain.Accommodation;
@@ -23,6 +24,17 @@ public class AccommodationService {
 	private final AccommodationRepository accommodationRepository;
 	private final AccommodationSearchQueryDslRepository accommodationSearchQueryDslRepository;
 
+	public List<Accommodation> findAccommodation(AccommodationSearchRequestDto accommodationSearchDto,
+		Pageable pageable) {
+		List<Accommodation> accommodations = accommodationSearchQueryDslRepository.findAllByAccommodationSearchDto(
+			accommodationSearchDto, pageable);
+
+		if (accommodations.isEmpty()) {
+			throw new BadRequestException(ErrorCode.ROOM_NOT_FOUND);
+		}
+		return accommodations;
+	}
+
 	public Accommodation createAccommodation(Long hostId, Accommodation accommodation) {
 		User host = userService.findById(hostId);
 		accommodation.setHost(host);
@@ -33,15 +45,5 @@ public class AccommodationService {
 	public Accommodation findById(Long accommodationId) {
 		return accommodationRepository.findById(accommodationId)
 			.orElseThrow(() -> new BadRequestException(ErrorCode.ROOM_NOT_FOUND));
-	}
-
-	public List<Accommodation> findAccommodation(AccommodationSearchRequestDto accommodationSearchDto) {
-		List<Accommodation> accommodations = accommodationSearchQueryDslRepository.findAllByAccommodationSearchDto(
-			accommodationSearchDto);
-
-		if (accommodations.isEmpty()) {
-			throw new BadRequestException(ErrorCode.ROOM_NOT_FOUND);
-		}
-		return accommodations;
 	}
 }

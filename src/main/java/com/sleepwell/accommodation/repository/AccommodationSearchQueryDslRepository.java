@@ -5,6 +5,7 @@ import static com.sleepwell.accommodation.domain.QAccommodation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,10 +21,12 @@ public class AccommodationSearchQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public List<Accommodation> findAllByAccommodationSearchDto(AccommodationSearchRequestDto dto) {
+	public List<Accommodation> findAllByAccommodationSearchDto(AccommodationSearchRequestDto dto, Pageable pageable) {
 		return jpaQueryFactory
 			.selectFrom(accommodation)
-			.where(nameEq(dto.accommodationName()),
+			.where(
+				idGoe(pageable),
+				nameEq(dto.accommodationName()),
 				typeEq(dto.accommodationType()),
 				streetAddressEq(dto.streetAddress()),
 				detailAddressEq(dto.detailAddress()),
@@ -31,7 +34,12 @@ public class AccommodationSearchQueryDslRepository {
 				notExistsReservationBetweenDates(dto.checkInDate(), dto.checkOutDate()),
 				priceBetween(dto.minPrice(), dto.maxPrice()),
 				numberOfGuestGoe(dto.numberOfGuest()))
+			.limit(pageable.getPageSize())
 			.fetch();
+	}
+
+	private static BooleanExpression idGoe(Pageable pageable) {
+		return accommodation.id.goe(pageable.getPageNumber());
 	}
 
 	private BooleanExpression nameEq(String accommodationName) {

@@ -4,12 +4,15 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sleepwell.accommodation.domain.Accommodation;
@@ -30,8 +33,12 @@ public class AccommodationController {
 	private final AccommodationService accommodationService;
 
 	@GetMapping
-	public List<AccommodationSearchResponseDto> findAccommodation(@RequestBody AccommodationSearchRequestDto dto) {
-		return accommodationService.findAccommodation(dto).stream()
+	public List<AccommodationSearchResponseDto> findAccommodation(@RequestBody AccommodationSearchRequestDto dto,
+		@RequestParam(defaultValue = "0") int pageNumber,
+		@RequestParam(defaultValue = "100") int pageSize) {
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+		return accommodationService.findAccommodation(dto, pageable).stream()
 			.map(AccommodationSearchResponseDto::fromEntity)
 			.collect(Collectors.toList());
 	}
