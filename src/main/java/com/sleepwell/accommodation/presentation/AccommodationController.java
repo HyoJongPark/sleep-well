@@ -1,6 +1,8 @@
 package com.sleepwell.accommodation.presentation;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.dto.AccommodationCreateDto;
+import com.sleepwell.accommodation.dto.AccommodationSearchRequestDto;
 import com.sleepwell.accommodation.dto.GetAccommodationResponseDto;
 import com.sleepwell.accommodation.service.AccommodationService;
 import com.sleepwell.auth.utils.AuthUser;
@@ -25,6 +28,13 @@ import lombok.RequiredArgsConstructor;
 public class AccommodationController {
 
 	private final AccommodationService accommodationService;
+
+	@GetMapping
+	public List<AccommodationSearchResponseDto> findAccommodation(@RequestBody AccommodationSearchRequestDto dto) {
+		return accommodationService.findAccommodation(dto).stream()
+			.map(AccommodationSearchResponseDto::fromEntity)
+			.collect(Collectors.toList());
+	}
 
 	@PostMapping
 	public ResponseEntity<Void> createAccommodation(@AuthUser Long hostId,
