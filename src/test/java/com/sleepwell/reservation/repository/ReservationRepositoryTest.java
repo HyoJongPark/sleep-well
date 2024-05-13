@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.domain.Address;
@@ -24,10 +25,11 @@ import com.sleepwell.user.domain.User;
 import com.sleepwell.user.repository.UserRepository;
 
 @DataJpaTest
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ReservationRepositoryTest {
 	@Autowired
-	private UserRepository memberRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private AccommodationRepository accommodationRepository;
@@ -51,7 +53,7 @@ class ReservationRepositoryTest {
 			checkInDate = LocalDate.of(2023, 6, 8);
 			checkOutDate = LocalDate.of(2023, 6, 10);
 
-			User member = memberRepository.save(new User("socialId", SocialType.GOOGLE, "nickname", "profileImage"));
+			User member = userRepository.save(new User("socialId", SocialType.GOOGLE, "nickname", "profileImage"));
 			Reservation reservation = reservationRepository.save(
 				new Reservation(checkInDate, checkOutDate, ReservationStatus.RESERVED, 1, 1000));
 			accommodation = accommodationRepository.save(
