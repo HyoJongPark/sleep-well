@@ -1,4 +1,4 @@
-package com.sleepwell.accommodation.presentation;
+package com.sleepwell.accommodation.dto;
 
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.domain.Address;
