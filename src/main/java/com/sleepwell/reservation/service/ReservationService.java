@@ -1,5 +1,7 @@
 package com.sleepwell.reservation.service;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import com.sleepwell.accommodation.domain.Accommodation;
@@ -31,6 +33,10 @@ public class ReservationService {
 
 		reservation.updateGuestAndAccommodation(guest, accommodation);
 		return reservationRepository.save(reservation);
+	}
+
+	public Slice<Reservation> findAllByGuestId(Long guestId, Pageable pageable) {
+		return reservationRepository.findAllByGuestId(guestId, pageable);
 	}
 
 	private void validateAlreadyHasReservation(Reservation reservation, Accommodation accommodation) {

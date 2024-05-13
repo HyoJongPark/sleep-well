@@ -2,6 +2,8 @@ package com.sleepwell.reservation.repository;
 
 import java.time.LocalDate;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,4 +17,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	)
 	boolean existsReservationInAccommodationThatDay(Long accommodationId, LocalDate checkInDate,
 		LocalDate checkOutDate, ReservationStatus status);
+
+	Slice<Reservation> findAllByGuestId(Long guestId, Pageable pageable);
 }
