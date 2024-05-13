@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class ReservationController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Slice<GetReservationResponseDto>> findReservation(@AuthUser Long guestId,
+	public ResponseEntity<Slice<GetReservationResponseDto>> findAllByGuestId(@AuthUser Long guestId,
 		@RequestParam(defaultValue = "0") int pageNumber,
 		@RequestParam(defaultValue = "100") int pageSize
 	) {
@@ -49,5 +50,13 @@ public class ReservationController {
 
 		Slice<GetReservationResponseDto> response = result.map(GetReservationResponseDto::fromEntity);
 		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/{reservationId}")
+	public ResponseEntity<GetReservationResponseDto> findById(@AuthUser Long guestId,
+		@PathVariable Long reservationId) {
+		Reservation reservation = reservationService.findById(guestId, reservationId);
+
+		return ResponseEntity.ok(GetReservationResponseDto.fromEntity(reservation));
 	}
 }

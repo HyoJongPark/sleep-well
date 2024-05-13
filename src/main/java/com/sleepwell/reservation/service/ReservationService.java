@@ -8,6 +8,7 @@ import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.service.AccommodationService;
 import com.sleepwell.common.error.exception.BadRequestException;
 import com.sleepwell.common.error.exception.ErrorCode;
+import com.sleepwell.common.error.exception.NotFoundException;
 import com.sleepwell.reservation.domain.Reservation;
 import com.sleepwell.reservation.domain.ReservationStatus;
 import com.sleepwell.reservation.repository.ReservationRepository;
@@ -39,6 +40,14 @@ public class ReservationService {
 		return reservationRepository.findAllByGuestId(guestId, pageable);
 	}
 
+	public Reservation findById(Long guestId, Long reservationId) {
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new NotFoundException(ErrorCode.NOT_EXIST_RESERVATION));
+
+		validateGuestId(reservation, guestId);
+		return reservation;
+	}
+
 	private void validateAlreadyHasReservation(Reservation reservation, Accommodation accommodation) {
 		if (reservationRepository.existsReservationInAccommodationThatDay(accommodation.getId(),
 			reservation.getCheckInDate(), reservation.getCheckOutDate(), ReservationStatus.CANCELED)) {
@@ -49,6 +58,12 @@ public class ReservationService {
 	private void validateNumberOfGuest(Reservation reservation, Accommodation accommodation) {
 		if (accommodation.getMaximumNumberOfGuest() < reservation.getNumberOfGuest()) {
 			throw new BadRequestException(ErrorCode.INVALID_NUMBER_OF_GUEST);
+		}
+	}
+
+	private void validateGuestId(Reservation reservation, Long guestId) {
+		if (!reservation.isGuest(guestId)) {
+			throw new BadRequestException(ErrorCode.INVALID_RESERVATION_GUEST);
 		}
 	}
 }

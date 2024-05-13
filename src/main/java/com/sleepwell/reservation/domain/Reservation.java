@@ -1,6 +1,7 @@
 package com.sleepwell.reservation.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.user.domain.User;
@@ -62,5 +63,9 @@ public class Reservation {
 
 		this.accommodation = accommodation;
 		accommodation.getReservations().add(this);
+	}
+
+	public boolean isGuest(Long guestId) {
+		return Objects.equals(guest.getId(), guestId);
 	}
 }

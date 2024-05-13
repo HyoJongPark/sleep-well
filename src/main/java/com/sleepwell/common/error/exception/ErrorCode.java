@@ -11,6 +11,7 @@ public enum ErrorCode {
 	INVALID_NUMBER_OF_GUEST("예약 가능 인원을 초과했습니다."),
 	USER_NOT_FOUND("존재하지 않는 사용자 입니다."),
 	INVALID_GOGGLE_OAUTH2_REQUEST("유효하지 않은 구글 oauth 요청입니다. 로그인 정보를 확인해주세요."),
+	INVALID_RESERVATION_GUEST("숙소 예약자 정보와 현재 사용자가 일치하지 않습니다."),
 
 	//401
 	TOKEN_NOT_EXIST("인증 토큰이 존재하지 않습니다."),
@@ -22,6 +23,9 @@ public enum ErrorCode {
 
 	//403
 	FORBIDDEN("접근 권한이 올바르지 않습니다."),
+
+	//404
+	NOT_EXIST_RESERVATION("존재하지 않는 예약 정보입니다."),
 
 	//500
 	INTERNAL_SERVER_ERROR("내부 서버에 문제가 발생했습니다."),
