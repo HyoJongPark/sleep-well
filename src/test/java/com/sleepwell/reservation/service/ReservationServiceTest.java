@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.service.AccommodationService;
+import com.sleepwell.common.error.exception.BadRequestException;
 import com.sleepwell.reservation.domain.Reservation;
 import com.sleepwell.reservation.domain.ReservationStatus;
 import com.sleepwell.reservation.repository.ReservationRepository;
@@ -58,7 +59,7 @@ class ReservationServiceTest {
 				eq(ReservationStatus.CANCELED))).thenReturn(true);
 
 			//when - then
-			assertThrows(RuntimeException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
+			assertThrows(BadRequestException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
 		}
 
 		@DisplayName("최대 숙박 인원을 초과하면 예약 불가")
@@ -73,7 +74,7 @@ class ReservationServiceTest {
 			when(reservation.getNumberOfGuest()).thenReturn(maximumNumberOfGuest + 1);
 
 			//when - then
-			assertThrows(RuntimeException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
+			assertThrows(BadRequestException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
 		}
 
 		@DisplayName("정상 예약 생성 요청 시 예약 정보 반환")

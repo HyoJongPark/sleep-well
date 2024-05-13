@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.sleepwell.common.error.exception.BadRequestException;
 import com.sleepwell.user.domain.User;
 import com.sleepwell.user.repository.UserRepository;
 
@@ -36,7 +37,7 @@ class UserServiceTest {
 			when(userRepository.findById(any())).thenReturn(Optional.empty());
 
 			//when - then
-			assertThrows(RuntimeException.class, () -> userService.findById(1L));
+			assertThrows(BadRequestException.class, () -> userService.findById(1L));
 		}
 
 		@Test

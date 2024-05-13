@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.repository.AccommodationRepository;
+import com.sleepwell.common.error.exception.BadRequestException;
 import com.sleepwell.user.domain.User;
 import com.sleepwell.user.service.UserService;
 
@@ -40,7 +41,7 @@ class AccommodationServiceTest {
 			when(accommodationRepository.findById(any())).thenReturn(Optional.empty());
 
 			//then
-			assertThrows(RuntimeException.class, () -> accommodationService.findById(1L));
+			assertThrows(BadRequestException.class, () -> accommodationService.findById(1L));
 		}
 
 		@DisplayName("유효한 숙소 조회 시 숙소 반환")
