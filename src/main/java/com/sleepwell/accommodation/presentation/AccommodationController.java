@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.dto.AccommodationCreateDto;
 import com.sleepwell.accommodation.dto.AccommodationSearchRequestDto;
+import com.sleepwell.accommodation.dto.AccommodationSearchResponseDto;
 import com.sleepwell.accommodation.dto.GetAccommodationResponseDto;
 import com.sleepwell.accommodation.service.AccommodationService;
 import com.sleepwell.auth.utils.AuthUser;
@@ -33,14 +34,18 @@ public class AccommodationController {
 	private final AccommodationService accommodationService;
 
 	@GetMapping
-	public List<AccommodationSearchResponseDto> findAccommodation(@RequestBody AccommodationSearchRequestDto dto,
+	public ResponseEntity<List<AccommodationSearchResponseDto>> findAccommodation(
+		@RequestBody AccommodationSearchRequestDto dto,
 		@RequestParam(defaultValue = "0") int pageNumber,
-		@RequestParam(defaultValue = "100") int pageSize) {
+		@RequestParam(defaultValue = "100") int pageSize
+	) {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		List<Accommodation> result = accommodationService.findAccommodation(dto, pageable);
 
-		return accommodationService.findAccommodation(dto, pageable).stream()
+		List<AccommodationSearchResponseDto> response = result.stream()
 			.map(AccommodationSearchResponseDto::fromEntity)
 			.collect(Collectors.toList());
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
