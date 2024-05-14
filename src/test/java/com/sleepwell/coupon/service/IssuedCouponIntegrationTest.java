@@ -47,6 +47,8 @@ class IssuedCouponIntegrationTest {
 	@DisplayName("쿠폰 정합성 테스트")
 	class CouponConsistencyTest {
 
+		//TODO: 각 테스트 전/후 rollback 등을 통한 격리 필요
+
 		@Test
 		@DisplayName("동시에 쿠폰을 발급 시, 재고 만큼의 수량만 발급한다.")
 		void couponIssueInSynchronousEnvironment() throws InterruptedException {
@@ -65,6 +67,7 @@ class IssuedCouponIntegrationTest {
 				users[i] = user;
 			}
 
+			userRepository.flush();
 			ExecutorService executorService = Executors.newFixedThreadPool(memberCount);
 			CountDownLatch latch = new CountDownLatch(memberCount);
 
@@ -87,12 +90,56 @@ class IssuedCouponIntegrationTest {
 			}
 
 			latch.await();
+			issuedCouponRepository.flush();
 			long reservationCount = issuedCouponRepository.count();
 
 			// then
 			assertEquals(couponAmount, successCount.get());
 			assertEquals(couponAmount, reservationCount);
 		}
-	}
 
+		@Test
+		@DisplayName("100건의 쿠폰 발급 테스트")
+		void CouponIssuanceTestWith100User() throws InterruptedException {
+			// given
+			int targetCount = 100;
+			String couponCode = "COUPON_SPEED_TEST";
+			User[] users = new User[targetCount];
+
+			Coupon coupon = couponRepository.save(
+				new Coupon("쿠폰", "상세 설명", couponCode, DiscountType.FIXED, 10, ExpiryType.FIXED,
+					LocalDateTime.now().plusDays(1), targetCount, LocalDateTime.now(),
+					LocalDateTime.now().plusDays(1)));
+			for (int i = 0; i < targetCount; i++) {
+				User user = userRepository.save(new User("socialId", SocialType.GOOGLE, "nickname", "test_url"));
+				users[i] = user;
+			}
+
+			ExecutorService executorService = Executors.newFixedThreadPool(32);
+			CountDownLatch latch = new CountDownLatch(targetCount);
+			AtomicInteger successCount = new AtomicInteger();
+
+			// when
+			for (int i = 0; i < targetCount; i++) {
+				User currentUser = users[i];
+
+				executorService.submit(() -> {
+					try {
+						issuedCouponFacade.issueCoupon(currentUser.getId(), couponCode);
+						successCount.incrementAndGet();
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					} finally {
+						latch.countDown();
+					}
+				});
+			}
+
+			latch.await();
+			long reservationCount = issuedCouponRepository.count();
+
+			// then
+			assertEquals(targetCount, successCount.get());
+		}
+	}
 }
