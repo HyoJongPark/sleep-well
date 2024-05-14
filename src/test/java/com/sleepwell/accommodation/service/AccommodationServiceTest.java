@@ -42,6 +42,8 @@ class AccommodationServiceTest {
 
 			//then
 			assertThrows(BadRequestException.class, () -> accommodationService.findById(1L));
+
+			verify(accommodationRepository, times(1)).findById(any());
 		}
 
 		@DisplayName("유효한 숙소 조회 시 숙소 반환")
@@ -56,6 +58,8 @@ class AccommodationServiceTest {
 
 			//then
 			assertEquals(mockAccommodation, findAccommodation);
+
+			verify(accommodationRepository, times(1)).findById(any());
 		}
 	}
 
@@ -76,6 +80,9 @@ class AccommodationServiceTest {
 
 			//then
 			assertEquals(accommodation, createdAccommodation);
+
+			verify(userService, times(1)).findById(any());
+			verify(accommodationRepository, times(1)).save(any());
 		}
 	}
 }

@@ -68,6 +68,10 @@ class ReservationServiceTest {
 
 			//when - then
 			assertThrows(BadRequestException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
+
+			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED));
+			verify(accommodation, never()).getMaximumNumberOfGuest();
 		}
 
 		@DisplayName("최대 숙박 인원을 초과하면 예약 불가")
@@ -83,6 +87,11 @@ class ReservationServiceTest {
 
 			//when - then
 			assertThrows(BadRequestException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
+
+			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED));
+			verify(accommodation, times(1)).getMaximumNumberOfGuest();
+			verify(reservationRepository, never()).save(any());
 		}
 
 		@DisplayName("정상 예약 생성 요청 시 예약 정보 반환")
@@ -98,6 +107,11 @@ class ReservationServiceTest {
 
 			//then
 			assertEquals(result, reservation);
+
+			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED));
+			verify(accommodation, times(1)).getMaximumNumberOfGuest();
+			verify(reservationRepository, times(1)).save(any());
 		}
 	}
 
@@ -113,6 +127,9 @@ class ReservationServiceTest {
 
 			//when - then
 			assertThrows(NotFoundException.class, () -> reservationService.findById(1L, 1L));
+
+			verify(reservationRepository, times(1)).findById(any());
+			verify(reservation, never()).isGuest(any());
 		}
 
 		@DisplayName("예약자가 아닌 사용자가 예약 조회 시 예외 발생")
@@ -124,6 +141,9 @@ class ReservationServiceTest {
 
 			//when - then
 			assertThrows(BadRequestException.class, () -> reservationService.findById(1L, 1L));
+
+			verify(reservationRepository, times(1)).findById(any());
+			verify(reservation, times(1)).isGuest(any());
 		}
 
 		@DisplayName("정상 예약 조회 요청 시 예약 정보 반환")
@@ -138,6 +158,9 @@ class ReservationServiceTest {
 
 			//then
 			assertEquals(reservation, result);
+
+			verify(reservationRepository, times(1)).findById(any());
+			verify(reservation, times(1)).isGuest(any());
 		}
 	}
 }
