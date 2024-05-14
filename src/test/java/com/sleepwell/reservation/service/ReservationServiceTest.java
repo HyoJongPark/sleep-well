@@ -3,6 +3,8 @@ package com.sleepwell.reservation.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.service.AccommodationService;
 import com.sleepwell.common.error.exception.BadRequestException;
+import com.sleepwell.common.error.exception.NotFoundException;
 import com.sleepwell.reservation.domain.Reservation;
 import com.sleepwell.reservation.domain.ReservationStatus;
 import com.sleepwell.reservation.repository.ReservationRepository;
@@ -35,22 +38,27 @@ class ReservationServiceTest {
 	@InjectMocks
 	private ReservationService reservationService;
 
-	private Accommodation accommodation;
-
 	private Reservation reservation;
 
 	@BeforeEach
 	void setup() {
-		accommodation = mock(Accommodation.class);
 		reservation = mock(Reservation.class);
-
-		when(accommodationService.findById(any())).thenReturn(accommodation);
-		when(userService.findById(any())).thenReturn(mock(User.class));
 	}
 
 	@Nested
 	@DisplayName("예약 생성 테스트")
 	class CreateReservation {
+
+		private Accommodation accommodation;
+
+		@BeforeEach
+		void setup() {
+			accommodation = mock(Accommodation.class);
+
+			when(accommodationService.findById(any())).thenReturn(accommodation);
+			when(userService.findById(any())).thenReturn(mock(User.class));
+		}
+
 		@DisplayName("예약 일자 사이에 이미 예약이 있다면 예약 불가")
 		@Test
 		void createReservationWithInvalidCheckInDate() {
@@ -90,6 +98,46 @@ class ReservationServiceTest {
 
 			//then
 			assertEquals(result, reservation);
+		}
+	}
+
+	@Nested
+	@DisplayName("예약 단건 조회 테스트")
+	class FindById {
+
+		@DisplayName("존재하지 않는 예약 조회 시 예외 발생")
+		@Test
+		void findReservationWithNotExistReservationId() {
+			//given
+			when(reservationRepository.findById(any())).thenReturn(Optional.empty());
+
+			//when - then
+			assertThrows(NotFoundException.class, () -> reservationService.findById(1L, 1L));
+		}
+
+		@DisplayName("예약자가 아닌 사용자가 예약 조회 시 예외 발생")
+		@Test
+		void findReservationWithInvalidGuestId() {
+			//given
+			when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
+			when(reservation.isGuest(any())).thenReturn(false);
+
+			//when - then
+			assertThrows(BadRequestException.class, () -> reservationService.findById(1L, 1L));
+		}
+
+		@DisplayName("정상 예약 조회 요청 시 예약 정보 반환")
+		@Test
+		void findReservationWithValidRequest() {
+			//given
+			when(reservationRepository.findById(any())).thenReturn(Optional.of(reservation));
+			when(reservation.isGuest(any())).thenReturn(true);
+
+			//when
+			Reservation result = reservationService.findById(1L, 1L);
+
+			//then
+			assertEquals(reservation, result);
 		}
 	}
 }
