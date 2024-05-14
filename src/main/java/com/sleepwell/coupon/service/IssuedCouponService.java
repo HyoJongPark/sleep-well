@@ -36,8 +36,7 @@ public class IssuedCouponService {
 
 		IssuedCoupon issuedCoupon = new IssuedCoupon(expiredTime, user);
 		coupon.updateCouponAmount(issuedCoupon);
-		issuedCouponRepository.save(issuedCoupon);
-		return issuedCoupon;
+		return issuedCouponRepository.save(issuedCoupon);
 	}
 
 	private LocalDateTime calculateExpiredTime(ExpiryType expiryType, LocalDateTime expiryDateTime) {
