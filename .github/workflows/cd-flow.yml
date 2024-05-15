@@ -38,6 +38,8 @@ jobs:
       - name: make docker-compose files
         run: |
           sed -i "s/GITHUB_SHA/${{ github.sha }}/g" ./docker/docker-compose-init.yml
+          sed -i "s/GITHUB_SHA/${{ github.sha }}/g" ./docker/docker-compose-blue.yml
+          sed -i "s/GITHUB_SHA/${{ github.sha }}/g" ./docker/docker-compose-green.yml
 
       - name: make BE .env
         run: |
