@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class IssuedCouponService {
 
@@ -24,7 +25,6 @@ public class IssuedCouponService {
 	private final CouponService couponService;
 	private final IssuedCouponRepository issuedCouponRepository;
 
-	@Transactional
 	public IssuedCoupon issueCoupon(Long userId, String couponCode) {
 		Coupon coupon = couponService.findByCouponCode(couponCode);
 		User user = userService.findById(userId);
