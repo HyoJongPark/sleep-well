@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  was-blue:
+  sleep-well-green:
     container_name: sleep-well-green
     image: phj2784/sleep-well:GITHUB_SHA
     restart: always
