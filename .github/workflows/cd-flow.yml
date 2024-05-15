@@ -21,7 +21,7 @@ jobs:
       - name: assign gradlew
         run: chmod +x gradlew
 
-      - name: Build with yarn
+      - name: Build Spring Boot application and create executable JAR file
         run: ./gradlew bootJar
 
       - name: Login to DockerHub
@@ -52,7 +52,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ".env,docker/docker-compose-init.yml,deploy.sh"
-          target: /sleep-well
+          target: ./sleep-well
           overwrite: true
 
       - name: deploy
