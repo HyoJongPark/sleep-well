@@ -51,6 +51,8 @@ services:
       - "8080:8080"
     env_file:
       - ../.env
+    environment:
+      USE_PROFILE: ${USE_PROFILE}
     depends_on:
       - redis
       - my-sql
