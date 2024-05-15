@@ -51,7 +51,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ".env,docker/docker-compose-init.yml,deploy.sh"
+          source: ".env,docker/docker-compose-init.yml,docker/deploy.sh"
           target: ./sleep-well
           overwrite: true
 
