@@ -52,7 +52,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ".env,docker/docker-compose-init.yml,docker/deploy.sh,docker/.env,/docker/docker-compose-blue.yml,docker/docker-compose-green.yml,nginx/nginx.conf"
+          source: ".env,docker/docker-compose-init.yml,docker/deploy.sh,docker/.env,docker/docker-compose-blue.yml,docker/docker-compose-green.yml,nginx/nginx.conf"
           target: ./sleep-well
           overwrite: true
 
