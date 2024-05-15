@@ -42,6 +42,7 @@ jobs:
       - name: make BE .env
         run: |
           echo "${{ secrets.BE_ENV }}" > .env
+          echo "${{ secrets.DOCKER_ENV }}" > ./docker/.env
 
       - name: send files & deploy script
         uses: appleboy/scp-action@master
@@ -51,7 +52,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ".env,docker/docker-compose-init.yml,docker/deploy.sh"
+          source: ".env,docker/docker-compose-init.yml,docker/deploy.sh,docker/.env"
           target: ./sleep-well
           overwrite: true
 
