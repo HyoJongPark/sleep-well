@@ -38,6 +38,8 @@ jobs:
       - name: make docker-compose files
         run: |
           sed -i "s/GITHUB_SHA/${{ github.sha }}/g" ./docker/docker-compose-init.yml
+          sed -i "s/GITHUB_SHA/${{ github.sha }}/g" ./docker/docker-compose-blue.yml
+          sed -i "s/GITHUB_SHA/${{ github.sha }}/g" ./docker/docker-compose-green.yml
 
       - name: make BE .env
         run: |
@@ -52,7 +54,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ".env,docker/docker-compose-init.yml,docker/.env"
+          source: ".env,docker/docker-compose-init.yml,docker/deploy.sh,docker/.env,docker/docker-compose-blue.yml,docker/docker-compose-green.yml,nginx/nginx.conf"
           target: ./sleep-well
           overwrite: true
 
@@ -67,5 +69,5 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }}
             cd ./sleep-well/docker
-#            chmod +x ./deploy.sh
-#            ./deploy.sh
+            chmod +x ./deploy.sh
+            ./deploy.sh
