@@ -34,7 +34,7 @@ sleep 60
 echo "<<< Reload nginx $(date +'%Y-%m-%d %H:%M:%S')" >> $DEBUG_LOG
 
 NGINX_ID=$(docker ps --filter "name=nginx" -q)
-NGINX_CONFIG="./sleep-well/nginx/nginx.conf"
+NGINX_CONFIG="../nginx/nginx.conf"
 
 sed -i "s/sleep-well-$NOW_COLOR:$WEB_SERVER_STOP_PORT/sleep-well-$TARGET_COLOR:$WEB_SERVER_TARGET_PORT/g" $NGINX_CONFIG
 sed -i "s/sleep-well-$NOW_COLOR/sleep-well-$TARGET_COLOR/g" $NGINX_CONFIG
