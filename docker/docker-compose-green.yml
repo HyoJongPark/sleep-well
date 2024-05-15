@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  was-blue:
+    container_name: sleep-well-green
+    image: phj2784/sleep-well:GITHUB_SHA
+    restart: always
+    volumes:
+      - /sleep-well/logs:/sleep-well/logs  # log 보존
+    ports:
+      - "8081:8081"
+    env_file:
+      - ../.env
