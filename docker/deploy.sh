@@ -19,10 +19,12 @@ fi
 
 # Run docker-compose
 DOCKER_COMPOSE="docker-compose-$TARGET_COLOR.yml"
+DOCKER_ENV=".env"
 
 echo "<<< Run docker-compose : $DOCKER_COMPOSE $(date +'%Y-%m-%d %H:%M:%S')" >> $DEBUG_LOG
 
-docker-compose -f "$DOCKER_COMPOSE" -e "USE_PROFILE=$NOW_COLOR" up -d
+sed -i "s/USE_PROFILE=$NOW_COLOR/USE_PROFILE=$TARGET_COLOR/g" $DOCKER_ENV
+docker compose -f "$DOCKER_COMPOSE" up -d
 
 echo ">>> Complete docker-compose up $(date +'%Y-%m-%d %H:%M:%S')" >> $DEBUG_LOG
 
