@@ -67,6 +67,5 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }}
             cd ./sleep-well/docker
-            docker compose -f ./docker-compose-init.yml up
 #            chmod +x ./deploy.sh
 #            ./deploy.sh
