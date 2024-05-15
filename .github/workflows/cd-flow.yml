@@ -65,6 +65,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }}
-            cd /sleep-well/docker
+            cd ./sleep-well/docker
             chmod +x ./sleep-well/deploy.sh
             ./sleep-well/deploy.sh
