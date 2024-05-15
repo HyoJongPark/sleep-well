@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  was-blue:
+  sleep-well-blue:
     container_name: sleep-well-blue
     image: phj2784/sleep-well:GITHUB_SHA
     restart: always
@@ -9,5 +9,7 @@ services:
       - /sleep-well/logs:/sleep-well/logs  # log 보존
     ports:
       - "8080:8080"
+    environment:
+      USE_PROFILE: ${USE_PROFILE}
     env_file:
       - ../.env

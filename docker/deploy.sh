@@ -3,7 +3,7 @@
 DEBUG_LOG="debug.log"
 
 # blue 컨테이너가 띄워져 있는지 확인
-EXIST_BLUE=$(docker ps --filter "name=was-blue" -q | grep -E .)
+EXIST_BLUE=$(docker ps --filter "name=sleep-well-blue" -q | grep -E .)
 
 if [ -n "$EXIST_BLUE" ]; then
   TARGET_COLOR="green"
