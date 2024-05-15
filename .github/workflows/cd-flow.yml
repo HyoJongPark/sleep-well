@@ -67,4 +67,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }}
             cd /sleep-well/docker
             chmod +x deploy.sh
-            ./deploy.sh
+            ./sleep-well/deploy.sh
