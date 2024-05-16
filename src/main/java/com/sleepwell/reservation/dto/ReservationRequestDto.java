@@ -18,6 +18,8 @@ public record ReservationRequestDto(
 	@NotNull
 	Long guestId,
 
+	Long issuedCoupon,
+
 	@NotBlank
 	String accommodationName,
 

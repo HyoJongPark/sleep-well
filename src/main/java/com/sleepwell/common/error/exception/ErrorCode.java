@@ -12,6 +12,9 @@ public enum ErrorCode {
 	USER_NOT_FOUND("존재하지 않는 사용자 입니다."),
 	INVALID_GOGGLE_OAUTH2_REQUEST("유효하지 않은 구글 oauth 요청입니다. 로그인 정보를 확인해주세요."),
 	INVALID_RESERVATION_GUEST("숙소 예약자 정보와 현재 사용자가 일치하지 않습니다."),
+	NOT_EXIST_ISSUED_COUPON("발급된 쿠폰이 존재하지 않습니다."),
+	INVALID_COUPON_ISSUER("예약자가 소유한 쿠폰이 아닙니다."),
+	ALREADY_USED_ISSUED_COUPON("이미 사용된 쿠폰입니다."),
 
 	//401
 	TOKEN_NOT_EXIST("인증 토큰이 존재하지 않습니다."),

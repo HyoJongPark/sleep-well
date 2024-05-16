@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import com.sleepwell.accommodation.domain.Accommodation;
+import com.sleepwell.coupon.domain.IssuedCoupon;
 import com.sleepwell.user.domain.User;
 
 import jakarta.persistence.Column;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +51,9 @@ public class Reservation {
 	@JoinColumn(name = "ACCOMMODATION_ID")
 	private Accommodation accommodation;
 
+	@OneToOne
+	private IssuedCoupon issuedCoupon;
+
 	public Reservation(LocalDate checkInDate, LocalDate checkOutDate, ReservationStatus reservationStatus,
 		int numberOfGuest, int amount) {
 		this.checkInDate = checkInDate;
@@ -65,7 +70,13 @@ public class Reservation {
 		accommodation.getReservations().add(this);
 	}
 
+	public void useCoupon(IssuedCoupon issuedCoupon) {
+		this.amount = issuedCoupon.getDiscountPrice(amount);
+		this.issuedCoupon = issuedCoupon;
+	}
+
 	public boolean isGuest(Long guestId) {
 		return Objects.equals(guest.getId(), guestId);
 	}
+
 }

@@ -39,6 +39,11 @@ public class IssuedCouponService {
 		return issuedCouponRepository.save(issuedCoupon);
 	}
 
+	public IssuedCoupon findById(Long issuedCouponId) {
+		return issuedCouponRepository.findById(issuedCouponId)
+			.orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXIST_ISSUED_COUPON));
+	}
+
 	private LocalDateTime calculateExpiredTime(ExpiryType expiryType, LocalDateTime expiryDateTime) {
 		return expiryType.calculateExpiredTime(expiryDateTime);
 	}

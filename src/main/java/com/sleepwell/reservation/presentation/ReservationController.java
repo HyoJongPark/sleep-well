@@ -33,7 +33,8 @@ public class ReservationController {
 	@PostMapping
 	public ResponseEntity<Void> createReservation(@AuthUser Long guestId,
 		@RequestBody @Valid ReservationRequestDto dto) {
-		Reservation reservation = reservationService.createReservation(dto.toEntity(), guestId, dto.accommodationId());
+		Reservation reservation = reservationService.createReservation(dto.toEntity(), guestId, dto.accommodationId(),
+			dto.issuedCoupon());
 
 		return ResponseEntity
 			.created(URI.create("/reservation/" + reservation.getId()))

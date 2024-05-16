@@ -1,6 +1,7 @@
 package com.sleepwell.coupon.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.sleepwell.common.domain.BaseEntity;
 import com.sleepwell.user.domain.User;
@@ -45,5 +46,23 @@ public class IssuedCoupon extends BaseEntity {
 
 	public void setCoupon(Coupon coupon) {
 		this.coupon = coupon;
+	}
+
+	public boolean isIssuer(User issuer) {
+		return Objects.equals(this.issuer, issuer);
+	}
+
+	public boolean alreadyUseCoupon() {
+		return couponStatus == CouponStatus.USED;
+	}
+
+	public int getDiscountPrice(int amount) {
+		DiscountType discountType = coupon.getDiscountType();
+		Integer discountAmount = coupon.getDiscountAmount();
+
+		if (discountType == DiscountType.PERCENT) {
+			return amount * discountAmount / 100;
+		}
+		return Math.max(amount - discountAmount, 0);
 	}
 }
