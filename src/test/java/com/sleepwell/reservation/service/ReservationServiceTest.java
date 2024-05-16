@@ -18,6 +18,8 @@ import com.sleepwell.accommodation.domain.Accommodation;
 import com.sleepwell.accommodation.service.AccommodationService;
 import com.sleepwell.common.error.exception.BadRequestException;
 import com.sleepwell.common.error.exception.NotFoundException;
+import com.sleepwell.coupon.domain.IssuedCoupon;
+import com.sleepwell.coupon.service.IssuedCouponService;
 import com.sleepwell.reservation.domain.Reservation;
 import com.sleepwell.reservation.domain.ReservationStatus;
 import com.sleepwell.reservation.repository.ReservationRepository;
@@ -35,6 +37,9 @@ class ReservationServiceTest {
 	@Mock
 	private AccommodationService accommodationService;
 
+	@Mock
+	private IssuedCouponService issuedCouponService;
+
 	@InjectMocks
 	private ReservationService reservationService;
 
@@ -51,9 +56,12 @@ class ReservationServiceTest {
 
 		private Accommodation accommodation;
 
+		private IssuedCoupon issuedCoupon;
+
 		@BeforeEach
 		void setup() {
 			accommodation = mock(Accommodation.class);
+			issuedCoupon = mock(IssuedCoupon.class);
 
 			when(accommodationService.findById(any())).thenReturn(accommodation);
 			when(userService.findById(any())).thenReturn(mock(User.class));
@@ -67,7 +75,8 @@ class ReservationServiceTest {
 				eq(ReservationStatus.CANCELED))).thenReturn(true);
 
 			//when - then
-			assertThrows(BadRequestException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
+			assertThrows(BadRequestException.class,
+				() -> reservationService.createReservation(reservation, 1L, 1L, 1L));
 
 			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
 				eq(ReservationStatus.CANCELED));
@@ -86,7 +95,8 @@ class ReservationServiceTest {
 			when(reservation.getNumberOfGuest()).thenReturn(maximumNumberOfGuest + 1);
 
 			//when - then
-			assertThrows(BadRequestException.class, () -> reservationService.createReservation(reservation, 1L, 1L));
+			assertThrows(BadRequestException.class,
+				() -> reservationService.createReservation(reservation, 1L, 1L, 1L));
 
 			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
 				eq(ReservationStatus.CANCELED));
@@ -94,16 +104,82 @@ class ReservationServiceTest {
 			verify(reservationRepository, never()).save(any());
 		}
 
-		@DisplayName("정상 예약 생성 요청 시 예약 정보 반환")
+		@DisplayName("사용할 쿠폰이 없고, 정상 요청이라면 예약 정보 반환")
 		@Test
-		void createReservationWithValidCheckInDate() {
+		void createReservationWithNoCouponAndValidRequest() {
 			//given
 			when(reservationRepository.existsReservationInAccommodationThatDay(any(), any(), any(),
 				eq(ReservationStatus.CANCELED))).thenReturn(false);
 			when(reservationRepository.save(any())).thenReturn(reservation);
 
 			//when
-			Reservation result = reservationService.createReservation(reservation, 1L, 1L);
+			Reservation result = reservationService.createReservation(reservation, 1L, 1L, null);
+
+			//then
+			assertEquals(result, reservation);
+
+			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED));
+			verify(accommodation, times(1)).getMaximumNumberOfGuest();
+			verify(issuedCouponService, never()).findById(any());
+			verify(reservationRepository, times(1)).save(any());
+		}
+
+		@DisplayName("내가 보유한 쿠폰이 아닌 쿠폰으로 요청 시 예외 발생")
+		@Test
+		void createReservationWithNotMyCoupon() {
+			//given
+			when(reservationRepository.existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED))).thenReturn(false);
+			when(issuedCouponService.findById(any())).thenReturn(issuedCoupon);
+			when(issuedCoupon.isIssuer(any())).thenReturn(false);
+
+			//when - then
+			assertThrows(BadRequestException.class,
+				() -> reservationService.createReservation(reservation, 1L, 1L, 1L));
+
+			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED));
+			verify(accommodation, times(1)).getMaximumNumberOfGuest();
+			verify(issuedCoupon, times(1)).isIssuer(any());
+			verify(issuedCoupon, never()).alreadyUseCoupon();
+		}
+
+		@DisplayName("이미 사용한 쿠폰으로 요청 시 예외 발생")
+		@Test
+		void createReservationWithAlreadyUsedCoupon() {
+			//given
+			when(reservationRepository.existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED))).thenReturn(false);
+			when(issuedCouponService.findById(any())).thenReturn(issuedCoupon);
+			when(issuedCoupon.isIssuer(any())).thenReturn(true);
+			when(issuedCoupon.alreadyUseCoupon()).thenReturn(true);
+
+			//when - then
+			assertThrows(BadRequestException.class,
+				() -> reservationService.createReservation(reservation, 1L, 1L, 1L));
+
+			verify(reservationRepository, times(1)).existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED));
+			verify(accommodation, times(1)).getMaximumNumberOfGuest();
+			verify(issuedCoupon, times(1)).isIssuer(any());
+			verify(issuedCoupon, times(1)).alreadyUseCoupon();
+			verify(reservationRepository, never()).save(any());
+		}
+
+		@DisplayName("쿠폰과 함께 정상 예약 생성 요청 시 예약 정보 반환")
+		@Test
+		void createReservationWithValidCheckInDate() {
+			//given
+			when(reservationRepository.existsReservationInAccommodationThatDay(any(), any(), any(),
+				eq(ReservationStatus.CANCELED))).thenReturn(false);
+			when(reservationRepository.save(any())).thenReturn(reservation);
+			when(issuedCouponService.findById(any())).thenReturn(issuedCoupon);
+			when(issuedCoupon.isIssuer(any())).thenReturn(true);
+			when(issuedCoupon.alreadyUseCoupon()).thenReturn(false);
+
+			//when
+			Reservation result = reservationService.createReservation(reservation, 1L, 1L, 1L);
 
 			//then
 			assertEquals(result, reservation);
