@@ -1,14 +1,15 @@
 package com.sleepwell.auth.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.sleepwell.user.domain.Role;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Component
@@ -20,8 +21,8 @@ public class JwtProvider {
 
 	private final Key key;
 
-	public JwtProvider() {
-		this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+	public JwtProvider(@Value("${sleep-well.secret-key}") String secretKey) {
+		this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 	}
 
 	public String createToken(Long id, Role role) {
@@ -33,7 +34,7 @@ public class JwtProvider {
 			.claim(ROLE_CLAIM, role)
 			.setIssuedAt(now)
 			.setExpiration(expiredTime)
-			.signWith(key, SignatureAlgorithm.HS512)
+			.signWith(key)
 			.compact();
 	}
 }
