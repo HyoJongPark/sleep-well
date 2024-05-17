@@ -44,8 +44,8 @@ public class JwtExtractor {
 		Claims claims = parseClaims(token.getValue());
 
 		Long id = claims.get(USER_ID_CLAIM, Long.class);
-		Role role = claims.get(ROLE_CLAIM, Role.class);
-		return new Principle(id, role);
+		String role = claims.get(ROLE_CLAIM, String.class);
+		return new Principle(id, Role.from(role));
 	}
 
 	private Optional<Cookie> parseCookie(Cookie[] cookies) {

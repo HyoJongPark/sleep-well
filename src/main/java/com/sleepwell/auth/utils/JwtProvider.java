@@ -31,7 +31,7 @@ public class JwtProvider {
 
 		return Jwts.builder()
 			.claim(USER_ID_CLAIM, id)
-			.claim(ROLE_CLAIM, role)
+			.claim(ROLE_CLAIM, role.name())
 			.setIssuedAt(now)
 			.setExpiration(expiredTime)
 			.signWith(key)

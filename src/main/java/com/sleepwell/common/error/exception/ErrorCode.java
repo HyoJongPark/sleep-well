@@ -15,6 +15,7 @@ public enum ErrorCode {
 	NOT_EXIST_ISSUED_COUPON("발급된 쿠폰이 존재하지 않습니다."),
 	INVALID_COUPON_ISSUER("예약자가 소유한 쿠폰이 아닙니다."),
 	ALREADY_USED_ISSUED_COUPON("이미 사용된 쿠폰입니다."),
+	INVALID_ROLE_NAME("사용자의 권한이 존재하지 않습니다."),
 
 	//401
 	TOKEN_NOT_EXIST("인증 토큰이 존재하지 않습니다."),
