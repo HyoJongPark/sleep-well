@@ -21,6 +21,7 @@ import com.sleepwell.accommodation.dto.AccommodationSearchRequestDto;
 import com.sleepwell.accommodation.dto.AccommodationSearchResponseDto;
 import com.sleepwell.accommodation.dto.GetAccommodationResponseDto;
 import com.sleepwell.accommodation.service.AccommodationService;
+import com.sleepwell.auth.dto.Principle;
 import com.sleepwell.auth.utils.AuthUser;
 
 import jakarta.validation.Valid;
@@ -49,9 +50,9 @@ public class AccommodationController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createAccommodation(@AuthUser Long hostId,
+	public ResponseEntity<Void> createAccommodation(@AuthUser Principle principle,
 		@RequestBody @Valid AccommodationCreateDto dto) {
-		Accommodation accommodation = accommodationService.createAccommodation(hostId, dto.toEntity());
+		Accommodation accommodation = accommodationService.createAccommodation(principle.id(), dto.toEntity());
 
 		return ResponseEntity.created(URI.create("/rooms/" + accommodation.getId())).build();
 	}

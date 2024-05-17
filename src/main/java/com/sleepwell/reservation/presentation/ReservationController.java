@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sleepwell.auth.dto.Principle;
 import com.sleepwell.auth.utils.AuthUser;
 import com.sleepwell.reservation.domain.Reservation;
 import com.sleepwell.reservation.dto.GetReservationResponseDto;
@@ -31,10 +32,10 @@ public class ReservationController {
 	private final ReservationService reservationService;
 
 	@PostMapping
-	public ResponseEntity<Void> createReservation(@AuthUser Long guestId,
+	public ResponseEntity<Void> createReservation(@AuthUser Principle principle,
 		@RequestBody @Valid ReservationRequestDto dto) {
-		Reservation reservation = reservationService.createReservation(dto.toEntity(), guestId, dto.accommodationId(),
-			dto.issuedCoupon());
+		Reservation reservation = reservationService.createReservation(dto.toEntity(), principle.id(),
+			dto.accommodationId(), dto.issuedCoupon());
 
 		return ResponseEntity
 			.created(URI.create("/reservation/" + reservation.getId()))
@@ -42,21 +43,21 @@ public class ReservationController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Slice<GetReservationResponseDto>> findAllByGuestId(@AuthUser Long guestId,
+	public ResponseEntity<Slice<GetReservationResponseDto>> findAllByGuestId(@AuthUser Principle principle,
 		@RequestParam(defaultValue = "0") int pageNumber,
 		@RequestParam(defaultValue = "100") int pageSize
 	) {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-		Slice<Reservation> result = reservationService.findAllByGuestId(guestId, pageable);
+		Slice<Reservation> result = reservationService.findAllByGuestId(principle.id(), pageable);
 
 		Slice<GetReservationResponseDto> response = result.map(GetReservationResponseDto::fromEntity);
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{reservationId}")
-	public ResponseEntity<GetReservationResponseDto> findById(@AuthUser Long guestId,
+	public ResponseEntity<GetReservationResponseDto> findById(@AuthUser Principle principle,
 		@PathVariable Long reservationId) {
-		Reservation reservation = reservationService.findById(guestId, reservationId);
+		Reservation reservation = reservationService.findById(principle.id(), reservationId);
 
 		return ResponseEntity.ok(GetReservationResponseDto.fromEntity(reservation));
 	}
