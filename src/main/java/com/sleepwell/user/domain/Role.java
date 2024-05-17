@@ -13,4 +13,11 @@ public enum Role {
 			throw new BadRequestException(ErrorCode.INVALID_ROLE_NAME);
 		}
 	}
+
+	public boolean verifyAccessPermissions(Role role) {
+		if (this == NORMAL) {
+			return true;
+		}
+		return this == role;
+	}
 }

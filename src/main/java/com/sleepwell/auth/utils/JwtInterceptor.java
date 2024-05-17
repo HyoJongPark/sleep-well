@@ -31,7 +31,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		Principle principle = jwtExtractor.extract(request.getCookies());
 
-		if (principle.role() != this.role) {
+		if (!role.verifyAccessPermissions(principle.role())) {
 			throw new ForbiddenException(ErrorCode.FORBIDDEN);
 		}
 
