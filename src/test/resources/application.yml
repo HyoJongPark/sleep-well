@@ -12,5 +12,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     defer-datasource-initialization: true
+
+sleep-well:
+  secret-key: ${SECRET_KEY}
