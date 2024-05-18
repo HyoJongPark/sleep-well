@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sleepwell.auth.dto.LoginRequest;
 import com.sleepwell.auth.service.AuthService;
 import com.sleepwell.auth.utils.JwtProvider;
-import com.sleepwell.user.domain.Role;
+import com.sleepwell.user.domain.User;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,10 +29,8 @@ public class AuthController {
 	@PostMapping("/google")
 	public ResponseEntity<Void> googleAuthLogin(@RequestBody @Valid LoginRequest loginRequest,
 		HttpServletResponse response) {
-		// User user = authService.login(loginRequest.socialType(), loginRequest.accessToken());
-		// String token = jwtProvider.createToken(user.getId(), user.getRole());
-		String token = jwtProvider.createToken(1L, Role.ADMIN);
-		System.out.println(token);
+		User user = authService.login(loginRequest.socialType(), loginRequest.accessToken());
+		String token = jwtProvider.createToken(user.getId(), user.getRole());
 
 		Cookie cookie = new Cookie(ACCESS_TOKEN_NAME, token);
 		cookie.setHttpOnly(true);
