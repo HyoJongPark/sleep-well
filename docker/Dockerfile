@@ -8,4 +8,4 @@ COPY ${JAR_FILE_PATH} /app/app.jar
 
 ENV TZ=Asia/Seoul
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar", "-Dspring.profiles.active=${USE_PROFILE}", "app.jar"]
