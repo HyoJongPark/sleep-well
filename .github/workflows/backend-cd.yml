@@ -2,7 +2,7 @@ name: develop CD
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ be/test/coupon-issue-test ]
 
 jobs:
   deploy:

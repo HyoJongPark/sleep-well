@@ -30,7 +30,7 @@ public class IssuedCouponService {
 		User user = userService.findById(userId);
 
 		validateCouponStock(coupon);
-		validateCouponAlreadyIssued(coupon, user);
+		// validateCouponAlreadyIssued(coupon, user);
 
 		LocalDateTime expiredTime = calculateExpiredTime(coupon.getExpiryType(), coupon.getExpiryDateTime());
 
