@@ -29,8 +29,20 @@ services:
     ports:
       - "6379:6379"
 
-  was-blue:
-    container_name: was-blue
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../var/log/nginx:/var/log/nginx
+    depends_on:
+      - sleep-well-blue
+
+  sleep-well-blue:
+    container_name: sleep-well-blue
     image: phj2784/sleep-well:GITHUB_SHA
     restart: always
     volumes:
