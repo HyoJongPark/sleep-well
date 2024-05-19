@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.sleepwell.common.domain.BaseEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -62,7 +63,7 @@ public class Coupon extends BaseEntity {
 	@Column
 	LocalDateTime endDateTime;
 
-	@OneToMany
+	@OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL, orphanRemoval = true)
 	List<IssuedCoupon> issuedCoupons = new ArrayList<>();
 
 	public Coupon(String title, String description, String couponCode, DiscountType discountType,
