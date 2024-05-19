@@ -30,6 +30,8 @@ public class IssuedCouponService {
 		User user = userService.findById(userId);
 
 		validateCouponStock(coupon);
+		validateCouponCanIssue(coupon);
+		validateCouponExpired(coupon);
 		validateCouponAlreadyIssued(coupon, user);
 
 		LocalDateTime expiredTime = calculateExpiredTime(coupon.getExpiryType(), coupon.getExpiryDateTime());
@@ -57,6 +59,18 @@ public class IssuedCouponService {
 	private void validateCouponAlreadyIssued(Coupon coupon, User user) {
 		if (issuedCouponRepository.existsByCouponAndIssuer(coupon, user)) {
 			throw new BadRequestException(ErrorCode.ALREADY_ISSUED_COUPON);
+		}
+	}
+
+	private void validateCouponCanIssue(Coupon coupon) {
+		if (coupon.canIssue()) {
+			throw new BadRequestException(ErrorCode.CANNOT_ISSUE_COUPON);
+		}
+	}
+
+	private void validateCouponExpired(Coupon coupon) {
+		if (coupon.isExpired()) {
+			throw new BadRequestException(ErrorCode.EXPIRED_COUPON);
 		}
 	}
 }

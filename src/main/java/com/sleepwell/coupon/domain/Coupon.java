@@ -90,4 +90,12 @@ public class Coupon extends BaseEntity {
 	public boolean outOfStock() {
 		return Objects.equals(this.totalAmount, this.issuedAmount);
 	}
+
+	public boolean canIssue() {
+		return startDateTime.isAfter(LocalDateTime.now());
+	}
+
+	public boolean isExpired() {
+		return endDateTime.isAfter(LocalDateTime.now());
+	}
 }
