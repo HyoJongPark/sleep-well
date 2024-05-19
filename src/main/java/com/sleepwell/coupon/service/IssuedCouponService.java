@@ -2,6 +2,10 @@ package com.sleepwell.coupon.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.dao.CannotAcquireLockException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import com.sleepwell.common.error.exception.BadRequestException;
@@ -25,6 +29,11 @@ public class IssuedCouponService {
 	private final CouponService couponService;
 	private final IssuedCouponRepository issuedCouponRepository;
 
+	@Retryable(
+		retryFor = {ObjectOptimisticLockingFailureException.class, CannotAcquireLockException.class},
+		maxAttempts = 1000,
+		backoff = @Backoff(100)
+	)
 	public IssuedCoupon issueCoupon(Long userId, String couponCode) {
 		Coupon coupon = couponService.findByCouponCode(couponCode);
 		User user = userService.findById(userId);
