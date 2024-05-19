@@ -30,6 +30,7 @@ public class IssuedCouponService {
 		User user = userService.findById(userId);
 
 		validateCouponStock(coupon);
+		// validateCouponExpired(coupon);
 		// validateCouponAlreadyIssued(coupon, user);
 
 		LocalDateTime expiredTime = calculateExpiredTime(coupon.getExpiryType(), coupon.getExpiryDateTime());
@@ -37,6 +38,12 @@ public class IssuedCouponService {
 		IssuedCoupon issuedCoupon = new IssuedCoupon(expiredTime, user);
 		coupon.updateCouponAmount(issuedCoupon);
 		return issuedCouponRepository.save(issuedCoupon);
+	}
+
+	private void validateCouponExpired(Coupon coupon) {
+		if (coupon.isExpired()) {
+			throw new BadRequestException(ErrorCode.EXPIRED_COUPON);
+		}
 	}
 
 	public IssuedCoupon findById(Long issuedCouponId) {
