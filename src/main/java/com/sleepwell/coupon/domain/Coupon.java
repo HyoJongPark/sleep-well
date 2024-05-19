@@ -63,7 +63,7 @@ public class Coupon extends BaseEntity {
 	@Column
 	LocalDateTime endDateTime;
 
-	@OneToMany(mappedBy = "issuedCoupon", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL, orphanRemoval = true)
 	List<IssuedCoupon> issuedCoupons = new ArrayList<>();
 
 	public Coupon(String title, String description, String couponCode, DiscountType discountType,
