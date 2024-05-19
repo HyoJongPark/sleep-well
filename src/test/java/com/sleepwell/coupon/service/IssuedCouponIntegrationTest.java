@@ -29,9 +29,6 @@ import com.sleepwell.user.repository.UserRepository;
 class IssuedCouponIntegrationTest {
 
 	@Autowired
-	IssuedCouponFacade issuedCouponFacade;
-
-	@Autowired
 	IssuedCouponService issuedCouponService;
 
 	@Autowired
@@ -79,7 +76,7 @@ class IssuedCouponIntegrationTest {
 
 				executorService.submit(() -> {
 					try {
-						issuedCouponFacade.issueCoupon(currentUser.getId(), couponCode);
+						issuedCouponService.issueCoupon(currentUser.getId(), couponCode);
 						successCount.incrementAndGet();
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
@@ -125,7 +122,7 @@ class IssuedCouponIntegrationTest {
 
 				executorService.submit(() -> {
 					try {
-						issuedCouponFacade.issueCoupon(currentUser.getId(), couponCode);
+						issuedCouponService.issueCoupon(currentUser.getId(), couponCode);
 						successCount.incrementAndGet();
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
