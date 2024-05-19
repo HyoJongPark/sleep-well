@@ -26,8 +26,8 @@ public class IssuedCouponController {
 
 	@PostMapping("/{couponCode}")
 	public ResponseEntity<Void> issueCoupon(@AuthUser Principle principle, @PathVariable String couponCode) {
-		// IssuedCoupon issuedCoupon = issuedCouponFacade.issueCoupon(principle.id(), couponCode);
-		IssuedCoupon issuedCoupon = issuedCouponService.issueCoupon(principle.id(), couponCode);
+		IssuedCoupon issuedCoupon = issuedCouponFacade.issueCoupon(principle.id(), couponCode);
+		// IssuedCoupon issuedCoupon = issuedCouponService.issueCoupon(principle.id(), couponCode);
 
 		return ResponseEntity
 			.created(URI.create("/coupon"))
