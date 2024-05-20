@@ -68,4 +68,12 @@ public class IssuedCoupon extends BaseEntity {
 		}
 		return Math.max(amount - discountAmount, 0);
 	}
+
+	public void useCoupon() {
+		this.couponStatus = CouponStatus.USED;
+	}
+
+	public boolean expired() {
+		return expiredDate.isBefore(LocalDateTime.now());
+	}
 }

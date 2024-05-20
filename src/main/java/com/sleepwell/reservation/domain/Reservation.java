@@ -73,6 +73,8 @@ public class Reservation {
 	public void useCoupon(IssuedCoupon issuedCoupon) {
 		this.amount = issuedCoupon.getDiscountPrice(amount);
 		this.issuedCoupon = issuedCoupon;
+
+		issuedCoupon.useCoupon();
 	}
 
 	public boolean isGuest(Long guestId) {
