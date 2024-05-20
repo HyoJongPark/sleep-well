@@ -19,7 +19,6 @@
 - ![Java](https://img.shields.io/badge/Java-17-007396?logo=java)
 - ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-6DB33F?logo=spring%20boot&logoColor=6DB33F)
 - ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=4479A1)
-- ![Redis](https://img.shields.io/badge/Redis-7.2.4-DC382D?logo=redis&logoColor=white)
 - ![JPA](https://img.shields.io/badge/JPA-3.2.5-000000?logo=&logoColor=000000)
 - ![Gradle](https://img.shields.io/badge/Gradle-8.5-02303A?logo=gradle&logoColor=02303A)
 - ![JUnit](https://img.shields.io/badge/JUnit-5.8.2-25A162?logo=junit&logoColor=white)
@@ -39,7 +38,7 @@
     - [쿼리 플랜으로 느린 쿼리 개선하기]()
     - [더 나은 개선을 위해 캐시 도입 고려]()
 - **TODO: 그 외 어떤 고민을 하셨나요?**
-    - [blue-green 으로 무중단 배포 도입하기]()
-    - [스와핑을 통한 ec2 프리티어 cpu 부하 해결하기]()
+    - [[Linux] 스와핑을 통한 ec2 프리티어 메모리 부족 문제 해결하기](https://velog.io/@phj5075/%EC%8A%A4%EC%99%80%ED%95%91%EC%9D%84-%ED%86%B5%ED%95%9C-ec2-%ED%94%84%EB%A6%AC%ED%8B%B0%EC%96%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EB%B6%80%EC%A1%B1-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0)
     - [[Docker] 이미지 크기를 줄이기 위한 여정]()
+    - [blue-green 으로 무중단 배포 도입하기]()
 
