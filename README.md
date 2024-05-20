@@ -1,3 +1,5 @@
+<p align="center"><img style="display: block; margin: 0 auto;" width="562" alt="image" src="https://github.com/HyoJongPark/sleep-well/assets/75190035/6df63bfe-ba12-47b5-86ad-db4d8038ca9e"></p>
+
 # 🛌 sleep-well 개요
 
 숙소 예약 프로젝트에 선착순 쿠폰 발행 및 사용 기능을 덫붙혀 중점적으로 다루는 프로젝트입니다.
