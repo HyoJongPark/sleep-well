@@ -97,6 +97,6 @@ public class Coupon extends BaseEntity {
 	}
 
 	public boolean isExpired() {
-		return endDateTime.isAfter(LocalDateTime.now());
+		return endDateTime.isBefore(LocalDateTime.now());
 	}
 }
