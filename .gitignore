@@ -14,3 +14,7 @@
 ### Query Dsl ###
 
 /src/main/generated/**
+
+### SQL SETTINGS ###
+
+*.sql
