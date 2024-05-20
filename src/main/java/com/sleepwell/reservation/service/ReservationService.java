@@ -51,6 +51,7 @@ public class ReservationService {
 
 		validateCouponOwner(issuedCoupon, guest);
 		validateCouponStatus(issuedCoupon);
+		validateCouponExpired(issuedCoupon);
 
 		reservation.useCoupon(issuedCoupon);
 	}
@@ -95,6 +96,12 @@ public class ReservationService {
 	private void validateCouponStatus(IssuedCoupon issuedCoupon) {
 		if (issuedCoupon.alreadyUseCoupon()) {
 			throw new BadRequestException(ErrorCode.ALREADY_USED_ISSUED_COUPON);
+		}
+	}
+
+	private void validateCouponExpired(IssuedCoupon issuedCoupon) {
+		if (issuedCoupon.expired()) {
+			throw new BadRequestException(ErrorCode.EXPIRED_COUPON);
 		}
 	}
 }
