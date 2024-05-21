@@ -32,7 +32,7 @@ jobs:
 
       - name: make docker images
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }} -f ./docker/Dockerfile.multi .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }} -f ./docker/Dockerfile.weight .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }}
 
       - name: make docker-compose files
