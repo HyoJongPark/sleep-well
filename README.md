@@ -41,6 +41,6 @@
     - ~~[더 나은 개선을 위해 캐시 도입 고려]()~~
 - **TODO: 그 외 어떤 고민을 하셨나요?**
     - [[Linux] 스와핑을 통한 ec2 프리티어 메모리 부족 문제 해결하기](https://velog.io/@phj5075/%EC%8A%A4%EC%99%80%ED%95%91%EC%9D%84-%ED%86%B5%ED%95%9C-ec2-%ED%94%84%EB%A6%AC%ED%8B%B0%EC%96%B4-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EB%B6%80%EC%A1%B1-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0)
-    - ~~[[Docker] 이미지 크기를 줄이기 위한 여정]()~~
+    - [[Docker] 이미지 크기를 줄이기 위한 여정](https://velog.io/@phj5075/Docker-%EC%9D%B4%EB%AF%B8%EC%A7%80-%ED%81%AC%EA%B8%B0%EB%A5%BC-%EC%A4%84%EC%9D%B4%EA%B8%B0-%EC%9C%84%ED%95%9C-%EC%97%AC%EC%A0%95)
     - ~~[blue-green 으로 무중단 배포 도입하기]()~~
 
