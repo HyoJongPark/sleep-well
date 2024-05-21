@@ -2,7 +2,7 @@ name: develop CD
 
 on:
   push:
-    branches: [ test/multi-stage-build ]
+    branches: [ test/multi-stage ]
 
 jobs:
   deploy:
