@@ -2,7 +2,7 @@ name: develop CD
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ test-multi-stage-build ]
 
 jobs:
   deploy:
@@ -32,7 +32,7 @@ jobs:
 
       - name: make docker images
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }} -f ./docker/Dockerfile .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }} -f ./docker/Dockerfile.init .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }}
 
       - name: make docker-compose files
