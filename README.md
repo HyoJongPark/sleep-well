@@ -13,7 +13,7 @@
 
 ### 🛌 Wiki
 
-- [프로젝트 Use Case](https://github.com/HyoJongPark/sleep-well/wiki/Use-Case)
+- ~~[프로젝트 Use Case]~~
 - [프로젝트 Commit Convention](https://github.com/HyoJongPark/sleep-well/wiki/Commit-Convention)
 
 ### 🛌 프로젝트 기술 스택
