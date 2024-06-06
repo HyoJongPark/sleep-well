@@ -36,7 +36,7 @@ jobs:
       - name: make and push docker images
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./docker
           push: true
           tags: "${{ secrets.DOCKER_HUB_USERNAME }}/sleep-well:${{ github.sha }}"
           cache-from: type=gha
