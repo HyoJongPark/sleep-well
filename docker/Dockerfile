@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jre as builder
 WORKDIR app
-ARG JAR_FILE=./build/libs/*.jar
+ARG JAR_FILE=../build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
