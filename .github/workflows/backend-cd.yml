@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: make and push docker images
-        uses: docker/build-push-actions@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: true
